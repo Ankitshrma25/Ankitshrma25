@@ -2,8 +2,8 @@ name: GitHub-Profile-3D-Contrib
 
 on:
   schedule:
-    - cron: "0 */6 * * *"  # Runs every 6 hours (at 00:00, 06:00, 12:00, 18:00 UTC)
-  workflow_dispatch:  # Allows manual triggering
+    - cron: "0 */6 * * *"  # Runs every 6 hours
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,12 +12,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Generate 3D Contribution Graph
+
     steps:
       - uses: actions/checkout@v5
+
       - uses: yoshi389111/github-profile-3d-contrib@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          USERNAME: "Ankitshrma25"  # Set your GitHub username here
+          USERNAME: ${{ github.repository_owner }}  # ← Correct & automatically handled
+
       - name: Commit & Push
         run: |
           git config user.name github-actions
